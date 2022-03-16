@@ -1,0 +1,93 @@
+## profiles사용하기 위해서 환경변수를 등록할것 SPRING_PROFILES_ACTIVE : pc
+
+event-listener:
+    port: 3264
+    send-no: "0544362120"
+    sms-head: "[시스테몀]"
+    
+main:
+    cmd: echo
+---
+spring:
+   config:
+      activate:
+         on-profile: pc
+   sql:
+      init:
+         mode: always
+   datasource:
+     url: jdbc:h2:~/test;
+     username: sa
+     password:
+     hikari:
+         maximum-pool-size: 25
+                  
+logging:
+    path: d:\log
+    file:
+        max-history: 60
+        max-size: 100MB
+    level:
+         com:
+            jjh: DEBUG
+         org:
+            springframework:
+               jdbc:
+                  core: TRACE
+
+---
+spring:
+   config:
+      activate:
+         on-profile: dev
+   datasource:
+     url: 
+     username:
+     password:
+     hikari:
+         maximum-pool-size: 25
+                     
+logging.file : /etc/log/EventListener/event.log
+
+logging:
+    path: /etc/log/EventListener/
+    file:
+        max-history: 365
+        max-size: 100MB
+    level:
+        com:
+            kbstar: DEBUG
+        org:
+            springframework:
+                transaction:
+                    interceptor: TRACE
+
+---
+spring:
+   config:
+      activate:
+         on-profile: dev
+   datasource:
+     url: 
+     username:
+     password:
+     hikari:
+         maximum-pool-size: 25
+         
+logging.file: /etc/log/EventListener/event.log
+logging:
+    pattern:
+        file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] $thread : %msg%n"
+    path: /etc/log/EventListener/
+    file:
+        max-history: 365
+        max-size: 100MB
+    level:
+        com:
+            kbstar: DEBUG
+        org:
+            springframework:
+                transaction:
+                    interceptor: TRACE
+
+

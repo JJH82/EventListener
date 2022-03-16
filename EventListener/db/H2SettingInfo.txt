@@ -1,0 +1,8 @@
+-실행
+H2w.bat
+
+- Console 접속 URL
+http://127.0.0.1:8082/
+
+- DB파일 위치 
+사용자폴더￦test.mv.db

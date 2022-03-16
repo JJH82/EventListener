@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <util:map id="HSqlMap" map-class="java.util.HashMap">
+        <entry key="sendTelNo">
+            <value>
+                <![CDATA[
+				insert into ums_send 
+				(		
+					ums_id		
+					,created_time
+					, recv_cellphone
+					, send_yn
+					, pin_no
+					, send_type
+					, sender_name
+					, msg
+					, appcode
+					, program_name
+					, recv_origin
+					, sender_ip
+				) values (
+				    to_char(sysdate,'YYYYMMDD') ||'_'||lpad(sq_ums_send.nextval,10,'0')
+					,to_char(sysdate,'YYYYMMDDHH24MISS')
+					,REPLACE(:수신대상자,'-')
+					,'N'
+					,(select pin_no from employee where cellphone = REPLACE(:수신대상자,'-') and rownum='1')
+					,:발송대상타입
+					,:요청자
+					,:메세지
+					,:어플리케이션코드
+					,:프로그램명
+					,REPLACE(:수신대상자,'-')
+					,:SMS전송요청IP
+				)
+                ]]>
+            </value>
+        </entry>
+
+        <entry key="sendEmpId">
+            <value>
+                <![CDATA[
+				insert into ums_send 
+				(		
+					ums_id		
+					,created_time
+					, recv_cellphone
+					, send_yn
+					, pin_no
+					, send_type
+					, sender_name
+					, msg
+					, appcode
+					, program_name
+					, recv_origin
+					, sender_ip
+				)
+			select to_char(sysdate,'YYYYMMDD') ||'_'||lpad(sq_ums_send.nextval,10,'0') 문자발송Key
+				    ,AA.*				    
+			from (
+				   
+					select 	to_char(sysdate,'YYYYMMDDHH24MISS') 
+							,cellphone
+							,'N'
+							,pin_no
+							,$발송대상타입
+							,$요청자
+							,$메세지
+							,$어플리케이션코드
+							,$프로그램명
+							,$수신대상자
+							,$SMS전송요청IP
+					from employee
+					where emp_id = $수신대상자
+						and cellphone is not null
+
+					union all
+					
+					select 	to_char(sysdate,'YYYYMMDDHH24MISS')
+							,cellphone
+							,'E'
+							,pin_no
+							,$발송대상타입
+							,$요청자
+							,$메세지
+							,$어플리케이션코드
+							,$프로그램명
+							,$수신대상자
+							,$SMS전송요청IP
+					from employee
+					where emp_id = $수신대상자
+						and cellphone is null
+						
+				   union all
+				   
+				   select 	to_char(sysdate,'YYYYMMDDHH24MISS')
+							,''
+							,'E'
+							,''
+							,$발송대상타입
+							,$요청자
+							,$메세지
+							,$어플리케이션코드
+							,$프로그램명
+							,$수신대상자
+							,$SMS전송요청IP
+					from dual
+					where ( 
+							select count(*)
+							from employee
+							where emp_id = $수신대상자
+							) = 0
+			) AA
+                ]]>
+            </value>
+        </entry>
+
+        <entry key="sendAppCode">
+            <value>
+                <![CDATA[
+				insert into ums_send 
+				(		
+					ums_id		
+					,created_time
+					, recv_cellphone
+					, send_yn
+					, pin_no
+					, send_type
+					, sender_name
+					, msg
+					, appcode
+					, program_name
+					, recv_origin
+					, sender_ip
+				)
+			select to_char(sysdate,'YYYYMMDD') ||'_'||lpad(sq_ums_send.nextval,10,'0') 문자발송Key
+				    ,AA.*				    
+			from (
+				   
+					select 	to_char(sysdate,'YYYYMMDDHH24MISS') 
+							,cellphone
+							,'N'
+							,pin_no
+							,$발송대상타입
+							,$요청자
+							,$메세지
+							,$어플리케이션코드
+							,$프로그램명
+							,$수신대상자
+							,$SMS전송요청IP
+					from employee emp 
+					, app_emp ae
+					where ae.emp_id = emp.emp_id
+						and ae.app_code = $수신대상자
+						and cellphone is not null
+
+					union all
+					
+					select 	to_char(sysdate,'YYYYMMDDHH24MISS')
+							,cellphone
+							,'E'
+							,pin_no
+							,$발송대상타입
+							,$요청자
+							,$메세지
+							,$어플리케이션코드
+							,$프로그램명
+							,$수신대상자
+							,$SMS전송요청IP
+					from employee emp 
+						, app_emp ae
+					where ae.emp_id = emp.emp_id
+						and ae.app_code = $수신대상자
+						and cellphone is null
+						
+				   union all
+				   
+				   select 	to_char(sysdate,'YYYYMMDDHH24MISS')
+							,''
+							,'E'
+							,''
+							,$발송대상타입
+							,$요청자
+							,$메세지
+							,$어플리케이션코드
+							,$프로그램명
+							,$수신대상자
+							,$SMS전송요청IP
+					from dual
+					where ( 
+							select count(*)
+							from employee emp 
+								, app_emp ae
+							where ae.emp_id = emp.emp_id
+							and ae.app_code = $수신대상자
+						
+							) = 0
+			) AA
+
+
+
+                ]]>
+            </value>
+        </entry>
+
+        <entry key="sendHandmateGroup">
+            <value>
+                <![CDATA[
+
+
+                ]]>
+            </value>
+        </entry>
+
+        <entry key="teamLeaderNo">
+            <value>
+                <![CDATA[
+
+
+                ]]>
+            </value>
+        </entry>
+
+         <entry key="sendVoice">
+            <value>
+                <![CDATA[
+
+
+                ]]>
+            </value>
+        </entry>
+
+    </util:map>
+
+</beans>
