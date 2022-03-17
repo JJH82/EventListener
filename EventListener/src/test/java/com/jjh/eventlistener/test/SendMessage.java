@@ -26,7 +26,7 @@ public class SendMessage {
 			if(socketChannel.isConnected()) {
 				ByteBuffer byteBuffer = EUC_KR.encode(msg);
 				socketChannel.write(byteBuffer);
-				System.out.println(new String(byteBuffer.array()));
+				System.out.println(new String(byteBuffer.array(),"EUC-KR"));
 			}
 		} catch (IOException e) {
 			
@@ -58,6 +58,7 @@ public class SendMessage {
 		msgList.add("INFO 1 emp2 20210316140000 emp1 P TQQ TCP전송 NA 직원번호 테스트");
 		msgList.add("INFO 2 01044531242 20210316140000 emp1 P TQQ TCP전송 NA 휴대폰번호 테스트");
 		msgList.add("INFO 3 TTA 20210316140000 emp1 P TQQ TCP전송 NA 어플리케이션 테스트");
+		msgList.add("OBM STORAGE Major SAB diskSize SQE JXWNT191000168 202203017160000||JXWNT191000168 equipment disk exceed");
 		
 
 		msgList.forEach( sender::send);

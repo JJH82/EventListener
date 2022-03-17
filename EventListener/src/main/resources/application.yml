@@ -6,7 +6,7 @@ event-listener:
     sms-head: "[시스테몀]"
     
 main:
-    cmd: echo
+    cmd: C:\Windows\System32\cmd.exe  
 ---
 spring:
    config:

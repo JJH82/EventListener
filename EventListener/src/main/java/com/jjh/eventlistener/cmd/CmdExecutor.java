@@ -23,6 +23,8 @@ public class CmdExecutor {
     public int execute(CmdArgument arg) {
         
         CommandLine cmdLine = new CommandLine(cmd);
+        cmdLine.addArgument( "/c", false  );
+        cmdLine.addArgument( "echo", false  );
         cmdLine.addArgument( formatEqualArg("severity", arg.get이벤트등급().getCode()), false  );
         cmdLine.addArgument( formatEqualArg("msg_grp", arg.get메세지그룹()), false  );
         cmdLine.addArgument( formatEqualArg("application", arg.get업무코드()), false  );
